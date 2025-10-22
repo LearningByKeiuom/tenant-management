@@ -487,11 +487,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi/WebApi.csproj",
-      "projectName": "WebApi",
-      "projectPath": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi/WebApi.csproj",
+      "projectUniqueName": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi-minimal/WebApi-minimal.csproj",
+      "projectName": "WebApi-minimal",
+      "projectPath": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi-minimal/WebApi-minimal.csproj",
       "packagesPath": "/Users/mdkeiuommiah/.nuget/packages/",
-      "outputPath": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi/obj/",
+      "outputPath": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/WebApi-minimal/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/mdkeiuommiah/.nuget/NuGet/NuGet.Config"

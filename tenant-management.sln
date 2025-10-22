@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{4726C6A6-F6F3-4801-BBE4-82A889152C11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{147B7189-1242-45A3-A1A3-6DB3A9118EA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi-minimal", "WebApi-minimal\WebApi-minimal.csproj", "{147B7189-1242-45A3-A1A3-6DB3A9118EA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI-v2", "WebAPI-v2\WebAPI-v2.csproj", "{F1710C8E-5233-42E6-AA6E-2E8E175D2487}"
 EndProject
