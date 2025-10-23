@@ -75,3 +75,20 @@ ublic class RoleEndpoints
     public string GetDelete(string roleId)
         => $"{Delete}{roleId}";
 }
+
+public class SchoolEndpoints
+{
+    public string Create { get; set; }
+    public string Update { get; set; }
+    public string Delete { get; set; }
+    public string ById { get; set; }
+    public string ByName { get; set; }
+    public string All { get; set; }
+
+    public string GetById(string schoolId)
+        => $"{ById}{schoolId}";
+    public string GetByName(string schoolName)
+        => $"{ByName}{schoolName}";
+    public string GetDelete(string schoolId)
+        => $"{Delete}{schoolId}";
+}
