@@ -31,3 +31,27 @@ public class UserEndpoints
     public string GetRolesById(string userId) =>  $"{RolesById}{userId}";
     public string UpdateRolesById(string userId) =>  $"{UpdateRoles}{userId}";
 }
+
+public class TenantEndpoints
+{ 
+    public string Create { get; set; }
+    public string Upgrade { get; set; }
+    public string All { get; set; }
+    public string ById { get; set; }
+    public string Activate { get; set; }
+    public string DeActivate { get; set; }
+
+    public string GetById(string tenantId)
+    {
+        return $"{ById}{tenantId}";
+    }
+
+    public string FullActivate(string tenantId)
+    {
+        return $"{Activate}{tenantId}/activate";
+    }
+    public string FullDeActivate(string tenantId)
+    {
+        return $"{DeActivate}{tenantId}/deactivate";
+    }
+}
