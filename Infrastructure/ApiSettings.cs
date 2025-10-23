@@ -55,3 +55,23 @@ public class TenantEndpoints
         return $"{DeActivate}{tenantId}/deactivate";
     }
 }
+
+ublic class RoleEndpoints
+{
+    public string Create { get; set; }
+    public string Update { get; set; }
+    public string PartialById { get; set; }
+    public string FullById { get; set; }
+    public string All { get; set; }
+    public string Delete { get; set; }
+    public string UpdatePermissions { get; set; }
+
+    public string GetPartial(string roleId)
+        => $"{PartialById}{roleId}";
+
+    public string GetFull(string roleId)
+        => $"{FullById}{roleId}";
+
+    public string GetDelete(string roleId)
+        => $"{Delete}{roleId}";
+}
