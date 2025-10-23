@@ -9,3 +9,9 @@ public class ApiSettings
     public RoleEndpoints RoleEndpoints { get; set; }
     public SchoolEndpoints SchoolEndpoints { get; set; }
 }
+
+public class TokenEndpoints
+{
+    public string Login { get; set; }
+    public string RefreshToken { get; set; }
+}
