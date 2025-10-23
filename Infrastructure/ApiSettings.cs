@@ -56,7 +56,7 @@ public class TenantEndpoints
     }
 }
 
-ublic class RoleEndpoints
+public class RoleEndpoints
 {
     public string Create { get; set; }
     public string Update { get; set; }
