@@ -47,6 +47,10 @@
             "Finbuckle.MultiTenant.AspNetCore": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Finbuckle.MultiTenant.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
