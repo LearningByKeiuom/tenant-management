@@ -1628,7 +1628,8 @@
       "Finbuckle.MultiTenant >= 8.0.0",
       "Finbuckle.MultiTenant.AspNetCore >= 8.0.0",
       "Finbuckle.MultiTenant.EntityFrameworkCore >= 8.0.0",
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.0"
+      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.0",
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.0"
     ]
   },
   "packageFolders": {
@@ -1687,6 +1688,10 @@
             "version": "[8.0.0, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "target": "Package",
+            "version": "[8.0.0, )"
+          },
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
             "target": "Package",
             "version": "[8.0.0, )"
           }
