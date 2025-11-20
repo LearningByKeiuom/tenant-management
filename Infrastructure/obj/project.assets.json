@@ -1210,7 +1210,6 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Finbuckle.MultiTenant >= 8.0.0",
       "Finbuckle.MultiTenant.AspNetCore >= 8.0.0"
     ]
   },
@@ -1257,10 +1256,6 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
-          "Finbuckle.MultiTenant": {
-            "target": "Package",
-            "version": "[8.0.0, )"
-          },
           "Finbuckle.MultiTenant.AspNetCore": {
             "target": "Package",
             "version": "[8.0.0, )"
