@@ -20,3 +20,10 @@ public static class SchoolFeature
     public const string Schools = nameof(Schools);
     public const string Tokens = nameof(Tokens);
 }
+
+public record SchoolPermission(string Action, string Feature, string Description, string Group, bool IsBasic = false, bool IsRoot = false)
+{
+    public string Name => NameFor(Action, Feature);
+
+    public static string NameFor(string action, string feature) => $"Permission.{feature}.{action}";
+}
