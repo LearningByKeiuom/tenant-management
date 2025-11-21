@@ -2,30 +2,30 @@ namespace Infrastructure;
 
 public class ApiSettings
 {
-    public string BaseApiUrl { get; set; }
-    public TokenEndpoints TokenEndpoints { get; set; }
-    public UserEndpoints UserEndpoints { get; set; }
-    public TenantEndpoints TenantEndpoints { get; set; }
-    public RoleEndpoints RoleEndpoints { get; set; }
-    public SchoolEndpoints SchoolEndpoints { get; set; }
+    public string BaseApiUrl { get; set; } = string.Empty;
+    public TokenEndpoints TokenEndpoints { get; set; } = new();
+    public UserEndpoints UserEndpoints { get; set; } = new();
+    public TenantEndpoints TenantEndpoints { get; set; } = new();
+    public RoleEndpoints RoleEndpoints { get; set; } = new();
+    public SchoolEndpoints SchoolEndpoints { get; set; } = new();
 }
 
 public class TokenEndpoints
 {
-    public string Login { get; set; }
-    public string RefreshToken { get; set; }
+    public string Login { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = string.Empty;
 }
 
 public class UserEndpoints
 {
-    public string Update { get; set; }
-    public string ResetPassword { get; set; }
-    public string All { get; set; }
-    public string ById { get; set; }
-    public string Register { get; set; }
-    public string RolesById { get; set; }
-    public string UpdateRoles { get; set; }
-    public string UpdateStatus { get; set; }
+    public string Update { get; set; } = string.Empty;
+    public string ResetPassword { get; set; } = string.Empty;
+    public string All { get; set; } = string.Empty;
+    public string ById { get; set; } = string.Empty;
+    public string Register { get; set; } = string.Empty;
+    public string RolesById { get; set; } = string.Empty;
+    public string UpdateRoles { get; set; } = string.Empty;
+    public string UpdateStatus { get; set; } = string.Empty;
 
     public string GetById(string userId) =>  $"{ById}{userId}";
     public string GetRolesById(string userId) =>  $"{RolesById}{userId}";
@@ -34,12 +34,12 @@ public class UserEndpoints
 
 public class TenantEndpoints
 { 
-    public string Create { get; set; }
-    public string Upgrade { get; set; }
-    public string All { get; set; }
-    public string ById { get; set; }
-    public string Activate { get; set; }
-    public string DeActivate { get; set; }
+    public string Create { get; set; } = string.Empty;
+    public string Upgrade { get; set; } = string.Empty;
+    public string All { get; set; } = string.Empty;
+    public string ById { get; set; } = string.Empty;
+    public string Activate { get; set; } = string.Empty;
+    public string DeActivate { get; set; } = string.Empty;
 
     public string GetById(string tenantId)
     {
@@ -58,13 +58,13 @@ public class TenantEndpoints
 
 public class RoleEndpoints
 {
-    public string Create { get; set; }
-    public string Update { get; set; }
-    public string PartialById { get; set; }
-    public string FullById { get; set; }
-    public string All { get; set; }
-    public string Delete { get; set; }
-    public string UpdatePermissions { get; set; }
+    public string Create { get; set; } = string.Empty;
+    public string Update { get; set; } = string.Empty;
+    public string PartialById { get; set; } = string.Empty;
+    public string FullById { get; set; } = string.Empty;
+    public string All { get; set; } = string.Empty;
+    public string Delete { get; set; } = string.Empty;
+    public string UpdatePermissions { get; set; } = string.Empty;
 
     public string GetPartial(string roleId)
         => $"{PartialById}{roleId}";
@@ -78,12 +78,12 @@ public class RoleEndpoints
 
 public class SchoolEndpoints
 {
-    public string Create { get; set; }
-    public string Update { get; set; }
-    public string Delete { get; set; }
-    public string ById { get; set; }
-    public string ByName { get; set; }
-    public string All { get; set; }
+    public string Create { get; set; } = string.Empty;
+    public string Update { get; set; } = string.Empty;
+    public string Delete { get; set; } = string.Empty;
+    public string ById { get; set; } = string.Empty;
+    public string ByName { get; set; } = string.Empty;
+    public string All { get; set; } = string.Empty;
 
     public string GetById(string schoolId)
         => $"{ById}{schoolId}";
