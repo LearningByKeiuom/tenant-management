@@ -2001,6 +2001,16 @@
             "related": ".xml"
           }
         }
+      },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
       }
     }
   },
@@ -5134,10 +5144,16 @@
         "yamldotnet.16.2.0.nupkg.sha512",
         "yamldotnet.nuspec"
       ]
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../Domain/Domain.csproj",
+      "msbuildProject": "../Domain/Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Domain >= 1.0.0",
       "Finbuckle.MultiTenant >= 8.0.0",
       "Finbuckle.MultiTenant.AspNetCore >= 8.0.0",
       "Finbuckle.MultiTenant.EntityFrameworkCore >= 8.0.0",
@@ -5173,7 +5189,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/Domain/Domain.csproj": {
+              "projectPath": "/Users/mdkeiuommiah/Documents/Practice_Projects/tenant-management/tenant-management/Domain/Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
