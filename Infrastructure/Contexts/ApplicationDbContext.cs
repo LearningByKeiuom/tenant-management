@@ -5,16 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
 
-public class ApplicationDbContext
+public class ApplicationDbContext : BaseDbContext
 {
-    public class ApplicationDbContext : BaseDbContext
+    public ApplicationDbContext(
+        IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantInfoContextAccessor, 
+        DbContextOptions<ApplicationDbContext> options) 
+        : base(tenantInfoContextAccessor, options)
     {
-        public ApplicationDbContext(
-            IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantInfoContextAccessor, 
-            DbContextOptions<ApplicationDbContext> options) 
-            : base(tenantInfoContextAccessor, options)
-        {
-        }
+    }
 
-        public DbSet<School> Schools => Set<School>();
+    public DbSet<School> Schools => Set<School>();
 }
