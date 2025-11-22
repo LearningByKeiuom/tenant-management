@@ -1,10 +1,8 @@
-using Application.Exceptions;
-using Application.Features.Identity.Users;
 using System.Security.Claims;
 
 namespace Infrastructure.Identity;
 
-public class CurrentUserService : ICurrentUserService
+public class CurrentUserService
 {
     private ClaimsPrincipal _principal;
 
@@ -56,7 +54,7 @@ public class CurrentUserService : ICurrentUserService
     {
         if(_principal is not null)
         {
-            throw new ConflictException(["Invalid operation on claim."]);
+          //  throw new ConflictException(["Invalid operation on claim."]);
         }
         _principal = principal;
     }
