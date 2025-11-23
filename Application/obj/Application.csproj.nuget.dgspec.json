@@ -55,6 +55,10 @@
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.1, )"
             }
           },
           "imports": [
