@@ -51,6 +51,10 @@
             "FluentValidation.DependencyInjectionExtensions": {
               "target": "Package",
               "version": "[11.11.0, )"
+            },
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
             }
           },
           "imports": [
