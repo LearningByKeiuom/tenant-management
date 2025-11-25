@@ -1,7 +1,7 @@
 using Application.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Tenancy.Commands;
+namespace Application.Features.Tenancy.Commands;
 
 public class UpdateTenantSubscriptionCommand : IRequest<IResponseWrapper>
 {

@@ -1,4 +1,4 @@
-namespace Application.Features.Identity.Tenancy;
+namespace Application.Features.Tenancy;
 
 public class CreateTenantRequest
 {

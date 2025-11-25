@@ -1,7 +1,7 @@
 using Application.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Tenancy.Queries;
+namespace Application.Features.Tenancy.Queries;
 
 public class GetTenantByIdQuery : IRequest<IResponseWrapper>
 {
