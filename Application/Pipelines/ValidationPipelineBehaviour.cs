@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Application.Pipelines;
 
-public class ValidationPipelineBenaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, IValidateMe
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationPipelineBenaviour(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationPipelineBehaviour(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
