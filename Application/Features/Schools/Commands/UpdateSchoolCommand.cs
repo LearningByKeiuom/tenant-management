@@ -2,7 +2,7 @@ using Application.Pipelines;
 using Application.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Schools.Commands;
+namespace Application.Features.Schools.Commands;
 
 public class UpdateSchoolCommand : IRequest<IResponseWrapper>, IValidateMe
 {

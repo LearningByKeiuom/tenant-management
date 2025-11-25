@@ -1,6 +1,6 @@
-namespace Application.Features.Identity.Schools;
+namespace Application.Features.Schools;
 
-public class UpdateSchoolRequest
+public class SchoolResponse
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

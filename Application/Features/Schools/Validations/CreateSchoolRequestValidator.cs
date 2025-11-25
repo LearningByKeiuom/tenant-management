@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.Features.Identity.Schools.Validations;
+namespace Application.Features.Schools.Validations;
 
 internal class CreateSchoolRequestValidator : AbstractValidator<CreateSchoolRequest>
 {

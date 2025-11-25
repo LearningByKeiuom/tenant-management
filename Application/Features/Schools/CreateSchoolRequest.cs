@@ -1,4 +1,4 @@
-namespace Application.Features.Identity.Schools;
+namespace Application.Features.Schools;
 
 public class CreateSchoolRequest
 {

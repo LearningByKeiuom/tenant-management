@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Features.Identity.Schools;
+namespace Application.Features.Schools;
 
 public interface ISchoolService
 {

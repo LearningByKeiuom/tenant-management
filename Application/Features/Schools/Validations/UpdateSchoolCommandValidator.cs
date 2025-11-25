@@ -1,7 +1,7 @@
-using Application.Features.Identity.Schools.Commands;
+using Application.Features.Schools.Commands;
 using FluentValidation;
 
-namespace Application.Features.Identity.Schools.Validations;
+namespace Application.Features.Schools.Validations;
 
 public class UpdateSchoolCommandValidator : AbstractValidator<UpdateSchoolCommand>
 {
