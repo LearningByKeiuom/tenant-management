@@ -14,8 +14,30 @@ public class ValidationPipelineBenaviour<TRequest, TResponse> : IPipelineBehavio
         _validators = validators;
     }
 
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (_validators.Any())
+        {
+            var context = new ValidationContext<TRequest>(request);
+            var validationResults = await Task
+                .WhenAll(_validators.Select(vr => vr.ValidateAsync(context, cancellationToken)));
+
+            if (!validationResults.Any(vr => vr.IsValid))
+            {
+                List<string> errors = [];
+
+                var failures = validationResults.SelectMany(vr => vr.Errors)
+                    .Where(f => f != null)
+                    .ToList();
+
+                foreach (var failure in failures)
+                {
+                    errors.Add(failure.ErrorMessage);
+                }
+
+                return (TResponse)await ResponseWrapper.FailAsync(messages: errors);
+            }
+        }
+        return await next();
     }
 }
