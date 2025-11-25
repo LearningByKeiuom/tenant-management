@@ -1,4 +1,4 @@
-using Application.Features.Schools.Commands;
+using Application.Features.Identity.Schools.Commands;
 using FluentValidation;
 
 namespace Application.Features.Identity.Schools.Validations;
