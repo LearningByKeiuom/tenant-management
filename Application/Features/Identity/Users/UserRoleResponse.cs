@@ -7,3 +7,8 @@ public class UserRoleResponse
     public string Description { get; set; }
     public bool IsAssigned { get; set; }
 }
+
+public class UserRolesResponse
+{
+    public List<UserRoleResponse> UserRoles { get; set; } = [];
+}
