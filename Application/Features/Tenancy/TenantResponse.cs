@@ -2,12 +2,12 @@ namespace Application.Features.Tenancy;
 
 public class TenantResponse
 {
-    public string Identifier { get; set; }
-    public string Name { get; set; }
-    public string ConnectionString { get; set; }
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string Identifier { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public DateTime ValidUpTo { get; set; }
     public bool IsActive { get; set; }
 }
