@@ -43,4 +43,25 @@ public static class Startup
         await scope.ServiceProvider.GetRequiredService<ITenantDbSeeder>()
             .InitializeDatabaseAsync(ct);
     }
+    
+    internal static IServiceCollection AddIdentityService(this IServiceCollection services)
+    {
+        return services
+            .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
+            .Services
+            .AddScoped<ITokenService, TokenService>()
+            .AddScoped<IRoleService, RoleService>()
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<ICurrentUserService, CurrentUserService>()
+            .AddScoped<CurrentUserMiddleware>();                
+    }
 }
