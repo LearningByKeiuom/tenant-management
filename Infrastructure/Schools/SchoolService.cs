@@ -47,8 +47,10 @@ public class SchoolService : ISchoolService
         return await _context.Schools.ToListAsync();
     }
 
-    public Task<School> GetByNameAsync(string name)
+    public async Task<School> GetByNameAsync(string name)
     {
-        throw new NotImplementedException();
+        return await _context.Schools
+            .Where(school => school.Name == name)
+            .FirstOrDefaultAsync();
     }
 }
