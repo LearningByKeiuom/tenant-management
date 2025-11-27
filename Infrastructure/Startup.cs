@@ -71,4 +71,12 @@ public static class Startup
             .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
             .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
     }
+    
+    public static JwtSettings GetJwtSettings(this IServiceCollection services, IConfiguration config)
+    {
+        var jwtSettingsConfig = config.GetSection(nameof(JwtSettings));
+        services.Configure<JwtSettings>(jwtSettingsConfig);
+
+        return jwtSettingsConfig.Get<JwtSettings>();
+    }
 }
