@@ -223,4 +223,17 @@ public static class Startup
                 .UseAuthorization()
                 .UseOpenApiDocumentation();
         }
+        
+        internal static IApplicationBuilder UseOpenApiDocumentation(this IApplicationBuilder app)
+        {
+            app.UseOpenApi();
+            app.UseSwaggerUi(options =>
+            {
+                options.DefaultModelExpandDepth = -1;
+                options.DocExpansion = "none";
+                options.TagsSorter = "alpha";
+            });
+
+            return app;
+        }
 }
