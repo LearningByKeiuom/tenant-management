@@ -20,9 +20,35 @@ public class TenantService : ITenantService
         _serviceProvider = serviceProvider;
     }
     
-    public Task<string> CreateTenantAsync(CreateTenantRequest createTenant, CancellationToken ct)
+    public async Task<string> CreateTenantAsync(CreateTenantRequest createTenant, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var newTenant = new ABCSchoolTenantInfo
+        {
+            Id = createTenant.Identifier,
+            Identifier = createTenant.Identifier,
+            Name = createTenant.Name,
+            IsActive = createTenant.IsActive,
+            ConnectionString = createTenant.ConnectionString,
+            Email = createTenant.Email,
+            FirstName = createTenant.FirstName,
+            LastName = createTenant.LastName,
+            ValidUpTo = createTenant.ValidUpTo
+        };
+
+        await _tenantStore.TryAddAsync(newTenant);
+
+        // Seeding tenant data
+        using var scope = _serviceProvider.CreateScope();
+
+        _serviceProvider.GetRequiredService<IMultiTenantContextSetter>()
+            .MultiTenantContext = new MultiTenantContext<ABCSchoolTenantInfo>()
+        {
+            TenantInfo = newTenant
+        };
+        await scope.ServiceProvider.GetRequiredService<ApplicationDbSeeder>()
+            .InitializeDatabaseAsync(ct);
+
+        return newTenant.Identifier;
     }
 
     public Task<string> ActivateAsync(string id)
