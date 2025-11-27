@@ -1,8 +1,9 @@
 using System.Security.Claims;
+using Application.Features.Identity.Users;
 
 namespace Infrastructure.Identity;
 
-public class CurrentUserService
+public class CurrentUserService : ICurrentUserService
 {
     private ClaimsPrincipal _principal;
 
