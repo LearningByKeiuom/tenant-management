@@ -213,4 +213,14 @@ public static class Startup
 
             return services;
         }
+        
+        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+        {
+            return app
+                .UseAuthentication()
+                .UseMiddleware<CurrentUserMiddleware>()
+                .UseMultiTenant()
+                .UseAuthorization()
+                .UseOpenApiDocumentation();
+        }
 }
