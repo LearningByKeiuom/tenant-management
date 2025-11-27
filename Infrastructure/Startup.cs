@@ -64,4 +64,11 @@ public static class Startup
             .AddScoped<ICurrentUserService, CurrentUserService>()
             .AddScoped<CurrentUserMiddleware>();                
     }
+    
+    internal static IServiceCollection AddPermissions(this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+            .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+    }
 }
