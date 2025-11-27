@@ -86,8 +86,26 @@ public class TenantService : ITenantService
         return tenantsInDb.Adapt<List<TenantResponse>>();
     }
 
-    public Task<TenantResponse> GetTenantByIdAsync(string id)
+    public async Task<TenantResponse> GetTenantByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        var tenantInDb = await _tenantStore.TryGetAsync(id);
+
+        #region Manual Mapping
+        //var tenantResponse = new TenantResponse
+        //{
+        //    Identifier = tenantInDb.Identifier,
+        //    Name = tenantInDb.Name,
+        //    ConnectionString = tenantInDb.ConnectionString,
+        //    Email = tenantInDb.Email,
+        //    FirstName = tenantInDb.FirstName,
+        //    LastName = tenantInDb.LastName,
+        //    IsActive = tenantInDb.IsActive,
+        //    ValidUpTo = tenantInDb.ValidUpTo
+        //};
+        //return tenantResponse;
+        #endregion
+        // Mapster
+        return tenantInDb.Adapt<TenantResponse>();
+
     }
 }
