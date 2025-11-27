@@ -79,4 +79,96 @@ public static class Startup
 
         return jwtSettingsConfig.Get<JwtSettings>();
     }
+    
+     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtSettings jwtSettings)
+        {
+            var secret = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+
+            services
+                .AddAuthentication(auth =>
+                {
+                    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(bearer =>
+                {
+                    bearer.RequireHttpsMetadata = false;
+                    bearer.SaveToken = true;
+                    bearer.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero,
+                        RoleClaimType = ClaimTypes.Role,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+                    };
+
+                    bearer.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception is SecurityTokenExpiredException)
+                            {
+                                if (!context.Response.HasStarted)
+                                {
+                                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                                    context.Response.ContentType = "application/json";
+                                    var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("Token has expired."));
+                                    return context.Response.WriteAsync(result);
+                                }
+                                return Task.CompletedTask;
+                            }
+                            else
+                            {
+                                if (!context.Response.HasStarted)
+                                {
+                                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                                    context.Response.ContentType = "application/json";
+                                    var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("An unhandled error has occured."));
+                                    return context.Response.WriteAsync(result);
+                                }
+                                return Task.CompletedTask;
+                            }
+                        },
+                        OnChallenge = context =>
+                        {
+                            context.HandleResponse();
+                            if (!context.Response.HasStarted)
+                            {
+                                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                                context.Response.ContentType = "application/json";
+                                var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("You are not authorized."));
+                                return context.Response.WriteAsync(result);
+                            }
+
+                            return Task.CompletedTask;
+                        },
+                        OnForbidden = context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            context.Response.ContentType = "application/json";
+                            var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("You are not authorized to access this resource."));
+                            return context.Response.WriteAsync(result);
+                        }                        
+                    };
+                });
+
+            services.AddAuthorization(options =>
+            {
+                foreach (var prop in typeof(SchoolPermissions).GetNestedTypes()
+                    .SelectMany(type => type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)))
+                {
+                    var propertyValue = prop.GetValue(null);
+                    if (propertyValue is not null)
+                    {
+                        options.AddPolicy(propertyValue.ToString(), policy => policy
+                            .RequireClaim(ClaimConstants.Permission, propertyValue.ToString()));
+                    }
+                }
+            });
+
+            return services;
+        }
 }
