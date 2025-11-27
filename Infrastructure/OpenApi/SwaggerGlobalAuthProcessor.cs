@@ -68,3 +68,30 @@ namespace Infrastructure.OpenApi;
             return true;
         }
     }
+    
+    public static class ObjectExtensions
+    {
+        /// <summary>
+        /// Attempts to retrieve the value of a specified property from an object. 
+        /// If the property does not exist or is inaccessible, returns the specified default value.
+        /// </summary>
+        /// <typeparam name="T">The expected type of the property value.</typeparam>
+        /// <param name="obj">The object from which to retrieve the property value.</param>
+        /// <param name="propertyName">The name of the property to retrieve.</param>
+        /// <param name="defaultValue">
+        /// The value to return if the property is not found or cannot be accessed. 
+        /// Defaults to the default value of type <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// The value of the specified property if it exists and is accessible; 
+        /// otherwise, the <paramref name="defaultValue"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method uses reflection to dynamically retrieve property values. 
+        /// It is best used in scenarios where the type of the object or the properties are not known at compile time.
+        /// </remarks>
+        public static T TryGetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default) =>
+            obj.GetType().GetRuntimeProperty(propertyName) is PropertyInfo propertyInfo
+                ? (T)propertyInfo.GetValue(obj)
+                : defaultValue;
+    }
