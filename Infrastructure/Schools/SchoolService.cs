@@ -28,9 +28,11 @@ public class SchoolService : ISchoolService
         return school.Id;
     }
 
-    public Task<int> DeleteAsync(School school)
+    public async Task<int> DeleteAsync(School school)
     {
-        throw new NotImplementedException();
+        _context.Schools.Remove(school);
+        await _context.SaveChangesAsync();
+        return school.Id;
     }
 
     public Task<School> GetByIdAsync(int schoolId)
