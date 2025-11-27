@@ -7,9 +7,18 @@ namespace Infrastructure.Schools;
 
 public class SchoolService : ISchoolService
 {
-    public Task<int> CreateAsync(School school)
+    private readonly ApplicationDbContext _context;
+
+    public SchoolService(ApplicationDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+    }
+    
+    public async Task<int> CreateAsync(School school)
+    {
+        await _context.Schools.AddAsync(school);
+        await _context.SaveChangesAsync();
+        return school.Id;
     }
 
     public Task<int> UpdateAsync(School school)
