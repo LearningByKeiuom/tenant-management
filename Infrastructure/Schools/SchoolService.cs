@@ -42,9 +42,9 @@ public class SchoolService : ISchoolService
             .FirstOrDefaultAsync();
     }
 
-    public Task<List<School>> GetAllAsync()
+    public async Task<List<School>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Schools.ToListAsync();
     }
 
     public Task<School> GetByNameAsync(string name)
