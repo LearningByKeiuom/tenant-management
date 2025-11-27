@@ -36,6 +36,27 @@ namespace Infrastructure;
 
 public static class Startup
 {
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration config)
+    {
+        return services
+            .AddDbContext<TenantDbContext>(options => options
+                .UseSqlServer(config.GetConnectionString("DefaultConnection")))
+            .AddMultiTenant<ABCSchoolTenantInfo>()
+            .WithHeaderStrategy(TenancyConstants.TenantIdName)
+            .WithClaimStrategy(TenancyConstants.TenantIdName)
+            .WithEFCoreStore<TenantDbContext, ABCSchoolTenantInfo>()
+            .Services
+            .AddDbContext<ApplicationDbContext>(options => options
+                .UseSqlServer(config.GetConnectionString("DefaultConnection")))
+            .AddTransient<ITenantDbSeeder, TenantDbSeeder>()
+            .AddTransient<ApplicationDbSeeder>()
+            .AddTransient<ITenantService, TenantService>()
+            .AddTransient<ISchoolService, SchoolService>()
+            .AddIdentityService()
+            .AddPermissions()
+            .AddOpenApiDocumentation(config);
+    }
+    
     public static async Task AddDatabaseInitializerAsync(this IServiceProvider serviceProvider, CancellationToken ct = default)
     {
         using var scope = serviceProvider.CreateScope();
