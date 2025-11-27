@@ -21,9 +21,11 @@ public class SchoolService : ISchoolService
         return school.Id;
     }
 
-    public Task<int> UpdateAsync(School school)
+    public async Task<int> UpdateAsync(School school)
     {
-        throw new NotImplementedException();
+        _context.Schools.Update(school);
+        await _context.SaveChangesAsync();
+        return school.Id;
     }
 
     public Task<int> DeleteAsync(School school)
