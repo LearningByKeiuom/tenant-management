@@ -69,9 +69,15 @@ public class TenantService : ITenantService
         return tenantInDb.Identifier;
     }
 
-    public Task<string> UpdateSubscriptionAsync(UpdateTenantSubscriptionRequest updateTenantSubscription)
+    public async Task<string> UpdateSubscriptionAsync(UpdateTenantSubscriptionRequest updateTenantSubscription)
     {
-        throw new NotImplementedException();
+        var tenantInDb = await _tenantStore.TryGetAsync(updateTenantSubscription.TenantId);
+
+        tenantInDb.ValidUpTo = updateTenantSubscription.NewExpiryDate;
+
+        await _tenantStore.TryUpdateAsync(tenantInDb);
+
+        return tenantInDb.Identifier;
     }
 
     public Task<List<TenantResponse>> GetTenantsAsync()
