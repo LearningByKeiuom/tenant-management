@@ -171,4 +171,46 @@ public static class Startup
 
             return services;
         }
+     
+        internal static IServiceCollection AddOpenApiDocumentation(this IServiceCollection services, IConfiguration config)
+        {
+            var swaggerSettings = config.GetSection(nameof(SwaggerSettings)).Get<SwaggerSettings>();
+
+            services.AddEndpointsApiExplorer();
+            _ = services.AddOpenApiDocument((document, serviceProvider) =>
+            {
+                document.PostProcess = doc =>
+                {
+                    doc.Info.Title = swaggerSettings.Title;
+                    doc.Info.Description = swaggerSettings.Description;
+                    doc.Info.Contact = new OpenApiContact
+                    {
+                        Name = swaggerSettings.ContactName,
+                        Email = swaggerSettings.ContactEmail,
+                        Url = swaggerSettings.ContactUrl
+                    };
+                    doc.Info.License = new OpenApiLicense
+                    {
+                        Name = swaggerSettings.LicenseName,
+                        Url = swaggerSettings.LicenseUrl
+                    };
+                };
+
+                document.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "Enter your Bearer token to attach it as a header on your requests.",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Type = OpenApiSecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT"
+                });
+
+                document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor());
+                document.OperationProcessors.Add(new SwaggerGlobalAuthProcessor());
+                document.OperationProcessors.Add(new SwaggerHeaderAttributeProcessor());
+            });
+
+            return services;
+        }
 }
