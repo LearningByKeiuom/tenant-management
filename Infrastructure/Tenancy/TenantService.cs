@@ -51,9 +51,13 @@ public class TenantService : ITenantService
         return newTenant.Identifier;
     }
 
-    public Task<string> ActivateAsync(string id)
+    public async Task<string> ActivateAsync(string id)
     {
-        throw new NotImplementedException();
+        var tenantInDb = await _tenantStore.TryGetAsync(id);
+        tenantInDb.IsActive = true;
+
+        await _tenantStore.TryUpdateAsync(tenantInDb);
+        return tenantInDb.Identifier;
     }
 
     public Task<string> DeactivateAsync(string id)
