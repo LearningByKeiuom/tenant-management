@@ -80,9 +80,10 @@ public class TenantService : ITenantService
         return tenantInDb.Identifier;
     }
 
-    public Task<List<TenantResponse>> GetTenantsAsync()
+    public async Task<List<TenantResponse>> GetTenantsAsync()
     {
-        throw new NotImplementedException();
+        var tenantsInDb = await _tenantStore.GetAllAsync();
+        return tenantsInDb.Adapt<List<TenantResponse>>();
     }
 
     public Task<TenantResponse> GetTenantByIdAsync(string id)
