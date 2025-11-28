@@ -1,9 +1,36 @@
 using Application.Features.Identity.Users;
+using Application.Exceptions;
+using Application.Features.Identity.Users;
+using Finbuckle.MultiTenant.Abstractions;
+using Infrastructure.Constants;
+using Infrastructure.Contexts;
+using Infrastructure.Identity.Models;
+using Infrastructure.Tenancy;
+using Mapster;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity;
 
 public class UserService : IUserService
 {
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly ApplicationDbContext _context;
+    private readonly IMultiTenantContextAccessor<ABCSchoolTenantInfo> _tenantContextAccessor;
+
+    public UserService(
+        UserManager<ApplicationUser> userManager, 
+        RoleManager<ApplicationRole> roleManager, 
+        ApplicationDbContext context, 
+        IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantContextAccessor)
+    {
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _context = context;
+        _tenantContextAccessor = tenantContextAccessor;
+    }
+    
     public Task<string> CreateAsync(CreateUserRequest request)
     {
         throw new NotImplementedException();
