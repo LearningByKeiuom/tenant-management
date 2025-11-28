@@ -68,9 +68,19 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<string> DeleteAsync(string userId)
+    public async Task<string> DeleteAsync(string userId)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(userId);
+
+        if (userInDb.Email == TenancyConstants.Root.Email)
+        {
+            throw new ConflictException(["Not allowed to remove Admin User for a Root Tenant."]);
+        }
+
+        _context.Users.Remove(userInDb);
+        await _context.SaveChangesAsync();
+
+        return userId;
     }
 
     public async Task<string> ActivateOrDeactivateAsync(string userId, bool activation)
