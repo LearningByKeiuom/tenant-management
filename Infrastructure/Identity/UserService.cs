@@ -122,9 +122,11 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<List<UserResponse>> GetAllAsync(CancellationToken ct)
+    public async Task<List<UserResponse>> GetAllAsync(CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var usersInDb = await _userManager.Users.ToListAsync(ct);
+
+        return usersInDb.Adapt<List<UserResponse>>();
     }
 
     public Task<UserResponse> GetByIdAsync(string userId, CancellationToken ct)
