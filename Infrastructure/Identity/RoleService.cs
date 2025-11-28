@@ -86,9 +86,13 @@ public class RoleService : IRoleService
         return await _roleManager.RoleExistsAsync(name);
     }
 
-    public Task<List<RoleResponse>> GetAllAsync(CancellationToken ct)
+    public async Task<List<RoleResponse>> GetAllAsync(CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var rolesInDb = await _roleManager
+            .Roles
+            .ToListAsync(ct);
+
+        return rolesInDb.Adapt<List<RoleResponse>>();
     }
 
     public Task<RoleResponse> GetByIdAsync(string id, CancellationToken ct)
