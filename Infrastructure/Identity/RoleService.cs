@@ -52,9 +52,28 @@ public class RoleService : IRoleService
         throw new NotImplementedException();
     }
 
-    public Task<string> DeleteAsync(string id)
+    public async Task<string> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var roleInDb = await _roleManager.FindByIdAsync(id)
+                       ?? throw new NotFoundException(["Role does not exist."]);
+
+        if (RoleConstants.IsDefaultRole(roleInDb.Name))
+        {
+            throw new ConflictException([$"Not allowed to delete '{roleInDb.Name}' role."]);
+        }
+
+        if ((await _userManager.GetUsersInRoleAsync(roleInDb.Name)).Count > 0)
+        {
+            throw new ConflictException([$"Not allowed to delete '{roleInDb.Name}' role as is currently assigned to users."]);
+        }
+
+        var result = await _roleManager.DeleteAsync(roleInDb);
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+
+        return roleInDb.Name;
     }
 
     public Task<string> UpdatePermissionsAsync(UpdateRolePermissionsRequest request)
