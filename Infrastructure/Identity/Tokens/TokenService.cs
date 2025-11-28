@@ -145,5 +145,11 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
     }
+    
+    private SigningCredentials GenerateSigningCredentials()
+    {
+        byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
+        return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
+    }
 
 }
