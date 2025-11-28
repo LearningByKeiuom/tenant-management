@@ -185,5 +185,14 @@ public class TokenService : ITokenService
 
         return claims;
     }
+    
+    private string GenerateRefreshToken()
+    {
+        byte[] randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+
+        return Convert.ToBase64String(randomNumber);
+    }
 
 }
