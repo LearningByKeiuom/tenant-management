@@ -104,8 +104,15 @@ public class RoleService : IRoleService
         return roleInDb.Adapt<RoleResponse>();
     }
 
-    public Task<RoleResponse> GetRoleWithPermissionsAsync(string id, CancellationToken ct)
+    public async Task<RoleResponse> GetRoleWithPermissionsAsync(string id, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var role = await GetByIdAsync(id, ct);
+
+        role.Permissions = await _context.RoleClaims
+            .Where(rc => rc.RoleId == id && rc.ClaimType == ClaimConstants.Permission)
+            .Select(rc => rc.ClaimValue)
+            .ToListAsync(ct);
+
+        return role;
     }
 }
