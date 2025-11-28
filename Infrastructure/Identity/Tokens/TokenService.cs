@@ -69,8 +69,19 @@ public class TokenService : ITokenService
         return await GenerateTokenAndUpdateUserAsync(userInDb);
     }
 
-    public Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        throw new NotImplementedException();
+        var userPrincipal = GetClaimsPrincipalFromExpiringToken(request.CurrentJwt);
+        var userEmail = userPrincipal.GetEmail();
+
+        var userInDb = await _userManager.FindByEmailAsync(userEmail)
+                       ?? throw new UnauthorizedException(["Authentication failed."]);
+
+        if (userInDb.RefreshToken != request.CurrentRefreshToken || userInDb.RefreshTokenExpiryTime < DateTime.UtcNow)
+        {
+            throw new UnauthorizedException(["Invalid token."]);
+        }
+
+        return await GenerateTokenAndUpdateUserAsync(userInDb);
     }
 }
