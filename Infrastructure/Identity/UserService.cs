@@ -31,9 +31,36 @@ public class UserService : IUserService
         _tenantContextAccessor = tenantContextAccessor;
     }
     
-    public Task<string> CreateAsync(CreateUserRequest request)
+    public async Task<string> CreateAsync(CreateUserRequest request)
     {
-        throw new NotImplementedException();
+        if (request.Password != request.ConfirmPassword)
+        {
+            throw new ConflictException(["Passwords do not match."]);
+        }
+
+        if (await IsEmailTakenAsync(request.Email))
+        {
+            throw new ConflictException(["Email already taken."]);
+        }
+
+        var newUser = new ApplicationUser
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            PhoneNumber = request.PhoneNumber,
+            IsActive = request.IsActive,
+            UserName = request.Email,
+            EmailConfirmed = true                
+        };
+
+        var result = await _userManager.CreateAsync(newUser, request.Password);
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+
+        return newUser.Id;
     }
 
     public Task<string> UpdateAsync(UpdateUserRequest request)
