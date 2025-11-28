@@ -203,4 +203,10 @@ public class UserService : IUserService
     {
         return (await GetUserPermissionsAsync(userId, ct)).Contains(permission);
     }
+    
+    private async Task<ApplicationUser> GetUserAsync(string userId)
+    {
+        return await _userManager.FindByIdAsync(userId)
+               ?? throw new NotFoundException(["User does not exist."]);
+    }
 }
