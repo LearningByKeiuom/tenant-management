@@ -63,9 +63,22 @@ public class UserService : IUserService
         return newUser.Id;
     }
 
-    public Task<string> UpdateAsync(UpdateUserRequest request)
+    public async Task<string> UpdateAsync(UpdateUserRequest request)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(request.Id);
+
+        userInDb.FirstName = request.FirstName;
+        userInDb.LastName = request.LastName;
+        userInDb.PhoneNumber = request.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(userInDb);
+
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+
+        return userInDb.Id;
     }
 
     public async Task<string> DeleteAsync(string userId)
