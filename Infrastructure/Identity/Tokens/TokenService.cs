@@ -109,5 +109,24 @@ public class TokenService : ITokenService
 
         return pricipal;
     }
+    
+    private async Task<TokenResponse> GenerateTokenAndUpdateUserAsync(ApplicationUser user)
+    {
+        // Generate jwt
+        var newJwt = await GenerateToken(user);
+
+        // Refresh Token
+        user.RefreshToken = GenerateRefreshToken();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryTimeInDays);
+
+        await _userManager.UpdateAsync(user);
+
+        return new TokenResponse
+        {
+            Jwt = newJwt,
+            RefreshToken = user.RefreshToken,
+            RefreshTokenExpiryDate = user.RefreshTokenExpiryTime
+        };
+    }
 
 }
