@@ -158,9 +158,9 @@ public class UserService : IUserService
         return userRoles;
     }
 
-    public Task<bool> IsEmailTakenAsync(string email)
+    public async Task<bool> IsEmailTakenAsync(string email)
     {
-        throw new NotImplementedException();
+        return await _userManager.FindByEmailAsync(email) is not null;
     }
 
     public async Task<List<string>> GetUserPermissionsAsync(string userId, CancellationToken ct)
