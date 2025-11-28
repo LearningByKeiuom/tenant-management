@@ -1,9 +1,35 @@
+using Application.Exceptions;
 using Application.Features.Identity.Roles;
+using Finbuckle.MultiTenant.Abstractions;
+using Infrastructure.Constants;
+using Infrastructure.Contexts;
+using Infrastructure.Identity.Models;
+using Infrastructure.Tenancy;
+using Mapster;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity;
 
 public class RoleService : IRoleService
 {
+    private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationDbContext _context;
+    private readonly IMultiTenantContextAccessor<ABCSchoolTenantInfo> _tenantInfoContextAccessor;
+
+    public RoleService(
+        RoleManager<ApplicationRole> roleManager, 
+        UserManager<ApplicationUser> userManager, 
+        ApplicationDbContext context, 
+        IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantInfoContextAccessor)
+    {
+        _roleManager = roleManager;
+        _userManager = userManager;
+        _context = context;
+        _tenantInfoContextAccessor = tenantInfoContextAccessor;
+    }
+    
     public Task<string> CreateAsync(CreateRoleRequest request)
     {
         throw new NotImplementedException();
