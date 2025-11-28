@@ -46,9 +46,19 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<string> ActivateOrDeactivateAsync(string userId, bool activation)
+    public async Task<string> ActivateOrDeactivateAsync(string userId, bool activation)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(userId);
+
+        userInDb.IsActive = activation;
+
+        var result = await _userManager.UpdateAsync(userInDb);
+
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+        return userId;
     }
 
     public Task<string> ChangePasswordAsync(ChangePasswordRequest request)
