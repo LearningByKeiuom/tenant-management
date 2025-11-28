@@ -136,9 +136,26 @@ public class UserService : IUserService
         return userInDb.Adapt<UserResponse>();
     }
 
-    public Task<List<UserRoleResponse>> GetUserRolesAsync(string userId, CancellationToken ct)
+    public async Task<List<UserRoleResponse>> GetUserRolesAsync(string userId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(userId);
+
+        var userRoles = new List<UserRoleResponse>();
+
+        var rolesInDb = await _roleManager.Roles.ToListAsync(ct);
+
+        foreach (var role in rolesInDb)
+        {
+            userRoles.Add(new UserRoleResponse
+            {
+                RoleId = role.Id,
+                Name = role.Name,
+                Description = role.Description,
+                IsAssigned = await _userManager.IsInRoleAsync(userInDb, role.Name),
+            });
+        }
+
+        return userRoles;
     }
 
     public Task<bool> IsEmailTakenAsync(string email)
