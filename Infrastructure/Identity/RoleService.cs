@@ -95,9 +95,13 @@ public class RoleService : IRoleService
         return rolesInDb.Adapt<List<RoleResponse>>();
     }
 
-    public Task<RoleResponse> GetByIdAsync(string id, CancellationToken ct)
+    public async Task<RoleResponse> GetByIdAsync(string id, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var roleInDb = await _context.Roles
+                           .FirstOrDefaultAsync(role => role.Id == id, ct)
+                       ?? throw new NotFoundException(["Role does not exist."]);
+
+        return roleInDb.Adapt<RoleResponse>();
     }
 
     public Task<RoleResponse> GetRoleWithPermissionsAsync(string id, CancellationToken ct)
