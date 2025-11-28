@@ -128,5 +128,11 @@ public class TokenService : ITokenService
             RefreshTokenExpiryDate = user.RefreshTokenExpiryTime
         };
     }
+    
+    private async Task<string> GenerateToken(ApplicationUser user)
+    {
+        // encrypted token
+        return GenerateEncryptedToken(GenerateSigningCredentials(), await GetUserClaims(user));
+    } 
 
 }
