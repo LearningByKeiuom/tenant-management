@@ -84,4 +84,30 @@ public class TokenService : ITokenService
 
         return await GenerateTokenAndUpdateUserAsync(userInDb);
     }
+    
+    private ClaimsPrincipal GetClaimsPrincipalFromExpiringToken(string expiringToken)
+    {
+        var tkValidationParams = new TokenValidationParameters 
+        { 
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero,
+            RoleClaimType = ClaimTypes.Role,
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret))
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var pricipal = tokenHandler.ValidateToken(expiringToken, tkValidationParams, out var securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken
+            || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new UnauthorizedException(["Invalid token provided. Failed to generate new token."]);
+        }
+
+        return pricipal;
+    }
+
 }
