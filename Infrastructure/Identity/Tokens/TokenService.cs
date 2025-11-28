@@ -1,7 +1,6 @@
 using Application.Features.Identity.Tokens;
 using Application;
 using Application.Exceptions;
-using Application.Features.Identity.Tokens;
 using Finbuckle.MultiTenant.Abstractions;
 using Infrastructure.Constants;
 using Infrastructure.Identity.Models;
