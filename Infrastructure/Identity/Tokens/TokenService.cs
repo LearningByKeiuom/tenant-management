@@ -134,5 +134,16 @@ public class TokenService : ITokenService
         // encrypted token
         return GenerateEncryptedToken(GenerateSigningCredentials(), await GetUserClaims(user));
     } 
+    
+    private string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims)
+    {
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpiryTimeInMinutes),
+            signingCredentials: signingCredentials);
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        return tokenHandler.WriteToken(token);
+    }
 
 }
