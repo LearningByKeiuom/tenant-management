@@ -129,9 +129,11 @@ public class UserService : IUserService
         return usersInDb.Adapt<List<UserResponse>>();
     }
 
-    public Task<UserResponse> GetByIdAsync(string userId, CancellationToken ct)
+    public async Task<UserResponse> GetByIdAsync(string userId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(userId);
+
+        return userInDb.Adapt<UserResponse>();
     }
 
     public Task<List<UserRoleResponse>> GetUserRolesAsync(string userId, CancellationToken ct)
