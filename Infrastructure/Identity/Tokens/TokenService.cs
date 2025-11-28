@@ -151,5 +151,39 @@ public class TokenService : ITokenService
         byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
         return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
     }
+    
+    private async Task<IEnumerable<Claim>> GetUserClaims(ApplicationUser user)
+    {
+        var userClaims = await _userManager.GetClaimsAsync(user);
+        var userRoles = await _userManager.GetRolesAsync(user);
+            
+        var roleClaims = new List<Claim>();
+        var permissionClaims = new List<Claim>();
+
+        foreach (var userRole in userRoles)
+        {
+            roleClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            var currentRole = await _roleManager.FindByNameAsync(userRole);
+
+            var allPermissionsForCurrentRole = await _roleManager.GetClaimsAsync(currentRole);
+
+            permissionClaims.AddRange(allPermissionsForCurrentRole);
+        }
+
+        var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.Name, user.FirstName),
+                new(ClaimTypes.Surname, user.LastName),
+                new(ClaimConstants.Tenant, _tenantContextAccessor.MultiTenantContext.TenantInfo.Id),
+                new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
+            }
+            .Union(roleClaims)
+            .Union(userClaims)
+            .Union(permissionClaims);
+
+        return claims;
+    }
 
 }
