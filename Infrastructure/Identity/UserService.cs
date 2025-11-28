@@ -146,9 +146,27 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<List<string>> GetUserPermissionsAsync(string userId, CancellationToken ct)
+    public async Task<List<string>> GetUserPermissionsAsync(string userId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(userId);
+
+        var userRolesNames = await _userManager.GetRolesAsync(userInDb);
+
+        var permissions = new List<string>();
+
+        foreach (var role in await _roleManager
+                     .Roles
+                     .Where(r => userRolesNames.Contains(r.Name))
+                     .ToListAsync(ct))
+        {
+            permissions.AddRange(await _context
+                .RoleClaims
+                .Where(rc => rc.RoleId == role.Id && rc.ClaimType == ClaimConstants.Permission)
+                .Select(rc => rc.ClaimValue)
+                .ToListAsync(ct));
+        }
+
+        return permissions.Distinct().ToList();
     }
 
     public Task<bool> IsPermissionAssigedAsync(string userId, string permission, CancellationToken ct = default)
