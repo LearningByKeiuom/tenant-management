@@ -30,9 +30,21 @@ public class RoleService : IRoleService
         _tenantInfoContextAccessor = tenantInfoContextAccessor;
     }
     
-    public Task<string> CreateAsync(CreateRoleRequest request)
+    public async Task<string> CreateAsync(CreateRoleRequest request)
     {
-        throw new NotImplementedException();
+        var newRole = new ApplicationRole()
+        {
+            Name = request.Name,
+            Description = request.Description
+        };
+
+        var result = await _roleManager.CreateAsync(newRole);
+
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+        return newRole.Name;
     }
 
     public Task<string> UpdateAsync(UpdateRoleRequest request)
