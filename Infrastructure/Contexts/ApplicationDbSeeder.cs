@@ -55,7 +55,7 @@ namespace Infrastructure.Contexts;
                     // Assign Admin Permissions
                     await AssignPermissionsToRoleAsync(SchoolPermissions.Admin, incomingRole, ct);
 
-                    if (_tenantInfoContextAccessor.MultiTenantContext.TenantInfo.Id == TenancyConstants.Root.Id)
+                    if (_tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo?.Id == TenancyConstants.Root.Id)
                     {
                         await AssignPermissionsToRoleAsync(SchoolPermissions.Root, incomingRole, ct);
                     }
