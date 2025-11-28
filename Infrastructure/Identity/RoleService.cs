@@ -81,9 +81,9 @@ public class RoleService : IRoleService
         throw new NotImplementedException();
     }
 
-    public Task<bool> DoesItExistsAsync(string name)
+    public async Task<bool> DoesItExistsAsync(string name)
     {
-        throw new NotImplementedException();
+        return await _roleManager.RoleExistsAsync(name);
     }
 
     public Task<List<RoleResponse>> GetAllAsync(CancellationToken ct)
