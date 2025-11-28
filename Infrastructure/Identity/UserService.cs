@@ -61,10 +61,24 @@ public class UserService : IUserService
         return userId;
     }
 
-    public Task<string> ChangePasswordAsync(ChangePasswordRequest request)
+    public async Task<string> ChangePasswordAsync(ChangePasswordRequest request)
     {
-        throw new NotImplementedException();
+        var userInDb = await GetUserAsync(request.UserId);
+
+        if (request.NewPassword != request.ConfirmNewPassword)
+        {
+            throw new ConflictException(["Passwords do not match."]);
+        }
+
+        var result = await _userManager.ChangePasswordAsync(userInDb, request.CurrentPassword, request.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+        return userInDb.Id;
     }
+
 
     public Task<string> AssignRolesAsync(string userId, UserRolesRequest request)
     {
