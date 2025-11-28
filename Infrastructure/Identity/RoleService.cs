@@ -47,9 +47,27 @@ public class RoleService : IRoleService
         return newRole.Name;
     }
 
-    public Task<string> UpdateAsync(UpdateRoleRequest request)
+    public async Task<string> UpdateAsync(UpdateRoleRequest request)
     {
-        throw new NotImplementedException();
+        var roleInDb = await _roleManager.FindByIdAsync(request.Id)
+                       ?? throw new NotFoundException(["Role does not exist."]);
+
+        if (RoleConstants.IsDefaultRole(roleInDb.Name))
+        {
+            throw new ConflictException([$"Changes not allowed on system role '{roleInDb.Name}'."]);
+        }
+
+        roleInDb.Name = request.Name;
+        roleInDb.Description = request.Description;
+        roleInDb.NormalizedName = request.Name.ToUpperInvariant();
+
+        var result = await _roleManager.UpdateAsync(roleInDb);
+
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+        }
+        return roleInDb.Name;
     }
 
     public async Task<string> DeleteAsync(string id)
