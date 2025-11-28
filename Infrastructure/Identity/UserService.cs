@@ -189,11 +189,13 @@ public class UserService : IUserService
                      .Where(r => userRolesNames.Contains(r.Name))
                      .ToListAsync(ct))
         {
-            permissions.AddRange(await _context
+            var roleClaims = await _context
                 .RoleClaims
                 .Where(rc => rc.RoleId == role.Id && rc.ClaimType == ClaimConstants.Permission)
                 .Select(rc => rc.ClaimValue)
-                .ToListAsync(ct));
+                .ToListAsync(ct);
+            
+            permissions.AddRange(roleClaims);
         }
 
         return permissions.Distinct().ToList();
