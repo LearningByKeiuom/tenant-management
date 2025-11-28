@@ -186,8 +186,8 @@ public class UserService : IUserService
         return permissions.Distinct().ToList();
     }
 
-    public Task<bool> IsPermissionAssigedAsync(string userId, string permission, CancellationToken ct = default)
+    public async Task<bool> IsPermissionAssigedAsync(string userId, string permission, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return (await GetUserPermissionsAsync(userId, ct)).Contains(permission);
     }
 }
