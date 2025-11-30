@@ -21,5 +21,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("{tenantId}/activate")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Tenants)]
+        public async Task<IActionResult> ActivateTenantAsync(string tenantId)
+        {
+            var response = await Sender.Send(new ActivateTenantCommand { TenantId = tenantId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
