@@ -22,5 +22,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("update")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Users)]
+        public async Task<IActionResult> UpdateUserDetailsAsync([FromBody] UpdateUserRequest updateUser)
+        {
+            var response = await Sender.Send(new UpdateUserCommand { UpdateUser = updateUser });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
