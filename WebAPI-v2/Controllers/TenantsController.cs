@@ -57,5 +57,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpGet("{tenantId}")]
+        [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Tenants)]
+        public async Task<IActionResult> GetTenantByIdAsync(string tenantId)
+        {
+            var response = await Sender.Send(new GetTenantByIdQuery { TenantId = tenantId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
