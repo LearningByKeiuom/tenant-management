@@ -1,4 +1,8 @@
-using Microsoft.AspNetCore.Http;
+using Application.Features.Identity.Users;
+using Application.Features.Identity.Users.Commands;
+using Application.Features.Identity.Users.Queries;
+using Infrastructure.Constants;
+using Infrastructure.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI_v2.Controllers
@@ -6,5 +10,17 @@ namespace WebAPI_v2.Controllers
     [Route("api/[controller]")]
     public class UsersController : BaseApiController
     {
+        [HttpPost("register")]
+        [ShouldHavePermission(SchoolAction.Create, SchoolFeature.Users)]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] CreateUserRequest createUser)
+        {
+            var response = await Sender.Send(new CreateUserCommand { CreateUser = createUser });
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
