@@ -57,5 +57,17 @@ namespace WebAPI_v2.Controllers
             }
             return NotFound(response);
         }
+        
+        [HttpGet("by-name/{name}")]
+        [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Schools)]
+        public async Task<IActionResult> GetSchoolByNameAsync(string name)
+        {
+            var response = await Sender.Send(new GetSchoolByNameQuery { Name = name });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
