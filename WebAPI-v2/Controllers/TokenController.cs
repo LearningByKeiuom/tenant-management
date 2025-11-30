@@ -26,5 +26,18 @@ namespace WebAPI_v2.Controllers
             } 
             return BadRequest(response);
         }
+        
+        [HttpPost("refresh-token")]
+        [OpenApiOperation("Used to generate new jwt from refresh token.")]
+        [ShouldHavePermission(action: SchoolAction.RefreshToken, feature: SchoolFeature.Tokens)]
+        public async Task<IActionResult> GetRefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
+        {
+            var response = await Sender.Send(new GetRefreshTokenQuery { RefreshToken =  refreshTokenRequest });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
