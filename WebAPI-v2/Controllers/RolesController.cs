@@ -21,5 +21,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("update")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Roles)]
+        public async Task<IActionResult> UpdateRoleAsync([FromBody] UpdateRoleRequest updateRole)
+        {
+            var response = await Sender.Send(new UpdateRoleCommand { UpdateRole = updateRole });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
