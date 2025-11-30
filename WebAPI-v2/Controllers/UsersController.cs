@@ -58,5 +58,17 @@ namespace WebAPI_v2.Controllers
             }
             return NotFound(response);
         }
+        
+        [HttpDelete("delete/{userId}")]
+        [ShouldHavePermission(SchoolAction.Delete, SchoolFeature.Users)]
+        public async Task<IActionResult> DeleteUserAsync(string userId)
+        {
+            var response = await Sender.Send(new DeleteUserCommand { UserId = userId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
