@@ -46,5 +46,17 @@ namespace WebAPI_v2.Controllers
             }
             return NotFound(response);
         }
+        
+        [HttpPut("update-roles/{userId}")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.UserRoles)]
+        public async Task<IActionResult> UpdateUserRolesAsync([FromBody] UserRolesRequest userRolesRequest, string userId)
+        {
+            var response = await Sender.Send(new UpdateUserRolesCommand { UserRolesRequest = userRolesRequest, UserId = userId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
