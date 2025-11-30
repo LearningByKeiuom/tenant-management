@@ -1,4 +1,8 @@
-using Microsoft.AspNetCore.Http;
+using Application.Features.Schools;
+using Application.Features.Schools.Commands;
+using Application.Features.Schools.Queries;
+using Infrastructure.Constants;
+using Infrastructure.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI_v2.Controllers
@@ -6,5 +10,16 @@ namespace WebAPI_v2.Controllers
     [Route("api/[controller]")]
     public class SchoolsController : BaseApiController
     {
+        [HttpPost("add")]
+        [ShouldHavePermission(SchoolAction.Create, SchoolFeature.Schools)]
+        public async Task<IActionResult> CreateSchoolAsync([FromBody] CreateSchoolRequest createSchool)
+        {
+            var response = await Sender.Send(new CreateSchoolCommand { CreateSchool = createSchool });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
