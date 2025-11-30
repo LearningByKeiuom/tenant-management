@@ -69,6 +69,18 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpGet("partial/{roleId}")]
+        [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Roles)]
+        public async Task<IActionResult> GetPartialRoleByIdAsync(string roleId)
+        {
+            var response = await Sender.Send(new GetRoleByIdQuery { RoleId = roleId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
     
 }
