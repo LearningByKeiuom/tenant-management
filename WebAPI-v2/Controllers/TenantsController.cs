@@ -33,5 +33,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("{tenantId}/deactivate")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Tenants)]
+        public async Task<IActionResult> DeactivateTenantAsync(string tenantId)
+        {
+            var response = await Sender.Send(new DeactivateTenantCommand { TenantId = tenantId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
