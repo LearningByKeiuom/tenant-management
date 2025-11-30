@@ -21,5 +21,17 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("update")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Schools)]
+        public async Task<IActionResult> UpdateSchoolAsync([FromBody] UpdateSchoolRequest updateSchool)
+        {
+            var response = await Sender.Send(new UpdateSchoolCommand { UpdateSchool = updateSchool });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
