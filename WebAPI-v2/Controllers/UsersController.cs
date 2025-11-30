@@ -106,5 +106,17 @@ namespace WebAPI_v2.Controllers
             }
             return NotFound(response);
         }
+        
+        [HttpGet("user-roles/{userId}")]
+        [ShouldHavePermission(SchoolAction.Read, SchoolFeature.UserRoles)]
+        public async Task<IActionResult> GetUserRolesAsync(string userId)
+        {
+            var response = await Sender.Send(new GetUserRolesQuery { UserId = userId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
