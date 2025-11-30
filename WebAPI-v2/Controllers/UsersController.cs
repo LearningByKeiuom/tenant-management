@@ -82,5 +82,17 @@ namespace WebAPI_v2.Controllers
             }
             return NotFound(response);
         }
+        
+        [HttpGet("{userId}")]
+        [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Users)]
+        public async Task<IActionResult> GetUserByIdAsync(string userId)
+        {
+            var response = await Sender.Send(new GetUserByIdQuery { UserId = userId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
