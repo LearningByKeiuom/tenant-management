@@ -33,5 +33,30 @@ namespace WebAPI_v2.Controllers
             }
             return BadRequest(response);
         }
+        
+        [HttpPut("update-permissions")]
+        [ShouldHavePermission(SchoolAction.Update, SchoolFeature.RoleClaims)]
+        public async Task<IActionResult> UpdateRoleClaimsAsync([FromBody] UpdateRolePermissionsRequest updateRoleClaims)
+        {
+            var response = await Sender.Send(new UpdateRolePermissionsCommand { UpdateRolePermissions = updateRoleClaims });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
+        
+        [HttpDelete("delete/{roleId}")]
+        [ShouldHavePermission(SchoolAction.Delete, SchoolFeature.Roles)]
+        public async Task<IActionResult> DeleteRoleAsync(string roleId)
+        {
+            var response = await Sender.Send(new DeleteRoleCommand { RoleId = roleId });
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
+    
 }
