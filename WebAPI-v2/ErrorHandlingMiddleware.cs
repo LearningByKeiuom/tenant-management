@@ -5,20 +5,13 @@ using System.Text.Json;
 
 namespace WebAPI_v2;
 
-public class ErrorHandlingMiddleware
+public class ErrorHandlingMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public ErrorHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-    
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
@@ -26,7 +19,7 @@ public class ErrorHandlingMiddleware
             var response = context.Response;
             response.ContentType = "application/json";
 
-            var responseWrapper = ResponseWrapper.Fail();
+            var responseWrapper = await ResponseWrapper.FailAsync();
 
             switch (ex)
             {
