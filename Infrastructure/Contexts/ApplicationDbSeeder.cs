@@ -50,20 +50,24 @@ namespace Infrastructure.Contexts;
                     await _roleManager.CreateAsync(incomingRole);
                 }
 
-                if (roleName == RoleConstants.Admin)
+                switch (roleName)
                 {
-                    // Assign Admin Permissions
-                    await AssignPermissionsToRoleAsync(SchoolPermissions.Admin, incomingRole, ct);
-
-                    if (_tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo?.Id == TenancyConstants.Root.Id)
+                    case RoleConstants.Admin:
                     {
-                        await AssignPermissionsToRoleAsync(SchoolPermissions.Root, incomingRole, ct);
+                        // Assign Admin Permissions
+                        await AssignPermissionsToRoleAsync(SchoolPermissions.Admin, incomingRole, ct);
+
+                        if (_tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo?.Id == TenancyConstants.Root.Id)
+                        {
+                            await AssignPermissionsToRoleAsync(SchoolPermissions.Root, incomingRole, ct);
+                        }
+
+                        break;
                     }
-                }
-                else if (roleName == RoleConstants.Basic)
-                {
-                    // Assign Basic Permissions
-                    await AssignPermissionsToRoleAsync(SchoolPermissions.Basic, incomingRole, ct);
+                    case RoleConstants.Basic:
+                        // Assign Basic Permissions
+                        await AssignPermissionsToRoleAsync(SchoolPermissions.Basic, incomingRole, ct);
+                        break;
                 }
             }
         }
@@ -77,29 +81,28 @@ namespace Infrastructure.Contexts;
 
             foreach (var incomingPermission in incomingRolePermissions)
             {
-                if (!currentlyAssignedClaims.Any(claim => claim.Type == ClaimConstants.Permission && claim.Value == incomingPermission.Name))
+                if (currentlyAssignedClaims.Any(claim =>
+                        claim.Type == ClaimConstants.Permission && claim.Value == incomingPermission.Name)) continue;
+                await _applicationDbContext.RoleClaims.AddAsync(new ApplicationRoleClaim
                 {
-                    await _applicationDbContext.RoleClaims.AddAsync(new ApplicationRoleClaim
-                    {
-                        RoleId = currentRole.Id,
-                        ClaimType = ClaimConstants.Permission,
-                        ClaimValue = incomingPermission.Name,
-                        Description = incomingPermission.Description,
-                        Group = incomingPermission.Group
-                    }, ct);
+                    RoleId = currentRole.Id,
+                    ClaimType = ClaimConstants.Permission,
+                    ClaimValue = incomingPermission.Name,
+                    Description = incomingPermission.Description,
+                    Group = incomingPermission.Group
+                }, ct);
 
-                    await _applicationDbContext.SaveChangesAsync(ct);
-                }
+                await _applicationDbContext.SaveChangesAsync(ct);
             }
         }
 
         private async Task InitializeAdminUserAsync()
         {
-            if (string.IsNullOrEmpty(_tenantInfoContextAccessor.MultiTenantContext.TenantInfo.Email)) return;
+            if (string.IsNullOrEmpty(_tenantInfoContextAccessor.MultiTenantContext.TenantInfo?.Email)) return;
 
             if (await _userManager.Users
                 .SingleOrDefaultAsync(user => user.Email == _tenantInfoContextAccessor.MultiTenantContext.TenantInfo.Email)
-                is not ApplicationUser incomingUser)
+                is not { } incomingUser)
             {
                 incomingUser = new ApplicationUser
                 {
