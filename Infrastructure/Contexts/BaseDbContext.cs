@@ -20,7 +20,8 @@ public abstract class BaseDbContext(
             IdentityUserRole<string>,
             IdentityUserLogin<string>,
             ApplicationRoleClaim,
-            IdentityUserToken<string>>(tenantInfoContextAccessor ?? VALUE, options)
+            IdentityUserToken<string>>(
+            tenantInfoContextAccessor ?? throw new ArgumentNullException(nameof(tenantInfoContextAccessor)), options)
 {
     private new ABCSchoolTenantInfo? TenantInfo { get; set; } = tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo;
 
