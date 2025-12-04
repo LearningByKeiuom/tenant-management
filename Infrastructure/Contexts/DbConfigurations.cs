@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Contexts;
 
- internal class DbConfigurations
+ internal abstract class DbConfigurations
     {
         internal class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
         {
