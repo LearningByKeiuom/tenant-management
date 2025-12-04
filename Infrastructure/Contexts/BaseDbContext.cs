@@ -8,24 +8,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
 
-public abstract class BaseDbContext :
-    MultiTenantIdentityDbContext<
-        ApplicationUser,
-        ApplicationRole,
-        string,
-        IdentityUserClaim<string>,
-        IdentityUserRole<string>,
-        IdentityUserLogin<string>,
-        ApplicationRoleClaim,
-        IdentityUserToken<string>>
+public abstract class BaseDbContext(
+    IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantInfoContextAccessor,
+    DbContextOptions options)
+    :
+        MultiTenantIdentityDbContext<
+            ApplicationUser,
+            ApplicationRole,
+            string,
+            IdentityUserClaim<string>,
+            IdentityUserRole<string>,
+            IdentityUserLogin<string>,
+            ApplicationRoleClaim,
+            IdentityUserToken<string>>(tenantInfoContextAccessor ?? VALUE, options)
 {
-    private new ABCSchoolTenantInfo? TenantInfo { get; set; }
-
-    protected BaseDbContext(IMultiTenantContextAccessor<ABCSchoolTenantInfo> tenantInfoContextAccessor, DbContextOptions options) 
-        : base(tenantInfoContextAccessor, options)
-    {
-        TenantInfo = tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo;
-    }
+    private new ABCSchoolTenantInfo? TenantInfo { get; set; } = tenantInfoContextAccessor?.MultiTenantContext?.TenantInfo;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
