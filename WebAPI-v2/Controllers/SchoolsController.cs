@@ -34,7 +34,7 @@ namespace WebAPI_v2.Controllers
             return NotFound(response);
         }
         
-        [HttpDelete("{schoolId}")]
+        [HttpDelete("{schoolId:int}")]
         [ShouldHavePermission(SchoolAction.Delete, SchoolFeature.Schools)]
         public async Task<IActionResult> DeleteSchoolAsync(int schoolId)
         {
@@ -46,7 +46,7 @@ namespace WebAPI_v2.Controllers
             return NotFound(response);
         }
         
-        [HttpGet("by-id/{schoolId}")]
+        [HttpGet("by-id/{schoolId:int}")]
         [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Schools)]
         public async Task<IActionResult> GetSchoolByIdAsync(int schoolId)
         {
