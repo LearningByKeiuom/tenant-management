@@ -32,7 +32,7 @@ public record SchoolPermission(string Action, string Feature, string Description
 
 public static class SchoolPermissions
     {
-        private static readonly SchoolPermission[] _allPermissions =
+        private static readonly SchoolPermission[] AllPermissions =
         [
             new SchoolPermission(SchoolAction.Create, SchoolFeature.Tenants, "Create Tenants", "Tenancy", IsRoot: true),
             new SchoolPermission(SchoolAction.Read, SchoolFeature.Tenants, "Read Tenants", "Tenancy", IsRoot: true),
@@ -64,14 +64,14 @@ public static class SchoolPermissions
         ];
 
         public static IReadOnlyList<SchoolPermission> All { get; } 
-            = new ReadOnlyCollection<SchoolPermission>(_allPermissions);
+            = new ReadOnlyCollection<SchoolPermission>(AllPermissions);
 
         public static IReadOnlyList<SchoolPermission> Root { get; } 
-            = new ReadOnlyCollection<SchoolPermission>(_allPermissions.Where(p => p.IsRoot).ToArray());
+            = new ReadOnlyCollection<SchoolPermission>(AllPermissions.Where(p => p.IsRoot).ToArray());
 
         public static IReadOnlyList<SchoolPermission> Admin { get; } 
-            = new ReadOnlyCollection<SchoolPermission>(_allPermissions.Where(p => !p.IsRoot).ToArray());
+            = new ReadOnlyCollection<SchoolPermission>(AllPermissions.Where(p => !p.IsRoot).ToArray());
 
         public static IReadOnlyList<SchoolPermission> Basic { get; } 
-            = new ReadOnlyCollection<SchoolPermission>(_allPermissions.Where(p => p.IsBasic).ToArray());
+            = new ReadOnlyCollection<SchoolPermission>(AllPermissions.Where(p => p.IsBasic).ToArray());
     }
