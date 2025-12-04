@@ -8,6 +8,6 @@ namespace WebAPI_v2.Controllers
     {
         private ISender _sender = null!;
 
-        public ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
+        protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
     }
 }
